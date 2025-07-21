@@ -1,3 +1,7 @@
+<img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=4C89F8&height=120&section=header"/>
+
+<img width="1584" height="396" alt="LinkedIn cover - 29" src="https://github.com/user-attachments/assets/d1c05723-0bec-4ce7-8dee-1ef8c95ebf3e" />
+
 # 🕐 Automatização de Ponto INSS
 
 Automatização para bater ponto no sistema SISREF do INSS, facilitando o controle de expediente durante o estágio.
@@ -157,3 +161,12 @@ Desenvolvido durante estágio no INSS para automatização de processos rotineir
 ---
 
 **⭐ Se este projeto foi útil para você, considere deixar uma estrela!**
+
+ <br>
+
+ <br>
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/ed7208b8-6bdc-4c82-98aa-8c8cb9c1428f" height="150"/>
+</div>
+
+<img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=4C89F8&height=120&section=footer"/>
