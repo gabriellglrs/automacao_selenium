@@ -25,16 +25,16 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 
 
-
 # Configurações
 @dataclass
 class Config:
     URL_LOGIN: str = "https://sisref.inss.gov.br/entrada.php"
-    TEMPO_ESPERA_CAPTCHA: int = 10
+    TEMPO_ESPERA_CAPTCHA: int = 6
     HORAS_TRABALHO_MINIMAS: int = 6
     MAX_TENTATIVAS_LOGIN: int = 3
     TIMEOUT_PADRAO: int = 15
     INTERVALO_VERIFICACAO: int = 5  # segundos entre verificações do relógio
+    SAIR_APOS_CALCULAR_HORARIO: bool = True  # Nova opção para sair após calcular horário
 
 
 # Configuração de logging
@@ -358,12 +358,28 @@ class SistemaInss:
                 logging.info(f"✅ Horário de entrada (do ponto): {horario_entrada.strftime('%H:%M:%S')}")
                 logging.info(
                     f"🕕 Horário de saída calculado: {self.relogio_manager.horario_saida_calculado.strftime('%H:%M:%S')}")
+
+                # NOVA FUNCIONALIDADE: Sair após calcular horário de saída
+                if self.config.SAIR_APOS_CALCULAR_HORARIO:
+                    logging.info("🚪 Configuração ativada: Saindo após calcular horário de saída...")
+                    logging.info("✋ Programa será encerrado em 5 segundos...")
+                    time.sleep(5)
+                    return False  # Retorna False para encerrar o programa
+
                 return True
 
             # Segunda tentativa: usar horário atual do relógio
             horario_atual = self.obter_horario_relogio()
             if horario_atual:
                 self.relogio_manager.definir_horario_entrada(horario_atual)
+
+                # NOVA FUNCIONALIDADE: Sair após calcular horário de saída
+                if self.config.SAIR_APOS_CALCULAR_HORARIO:
+                    logging.info("🚪 Configuração ativada: Saindo após calcular horário de saída...")
+                    logging.info("✋ Programa será encerrado em 3 segundos...")
+                    time.sleep(3)
+                    return False  # Retorna False para encerrar o programa
+
                 return True
 
             return False
@@ -461,8 +477,8 @@ class SistemaInss:
 
         # Inicializa o horário de entrada de forma mais robusta
         if not self.inicializar_horario_entrada():
-            logging.error("❌ Não foi possível inicializar horário de entrada")
-            return False
+            logging.info("🚪 Encerrando programa conforme configuração...")
+            return True  # Retorna True para indicar que foi encerrado propositalmente
 
         contador_verificacoes = 0
         while True:
@@ -539,6 +555,7 @@ def main():
     print("   • Fecha o ponto automaticamente às 6 horas")
     print("   • Múltiplas estratégias de detecção")
     print("   • Sistema de debug avançado")
+    print("   • 🚪 NOVO: Sai automaticamente após calcular horário")
     print("=" * 60)
 
     try:
@@ -557,8 +574,8 @@ def main():
     except Exception as e:
         logging.error(f"Erro fatal: {e}")
     finally:
-        logging.info("Pressione Enter para fechar...")
-        input()
+        logging.info("👋 Programa encerrado automaticamente")
+        # Remove o input() para não aguardar entrada do usuário
 
 
 if __name__ == "__main__":
